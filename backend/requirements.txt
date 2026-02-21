@@ -131,6 +131,7 @@ psycopg2-binary
 sentence-transformers
 pypdf
 langchain
+langchain-text-splitters
 google-generativeai
 torch
 numpy
