@@ -1,12 +1,14 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from utils.store_documents import ingest_document
+from utils.pdf_ingest import ingest_pdf
 from utils.retrieve import retrieve_docs
 from utils.llm import generate_answer
 
 # --------------------
 from dotenv import load_dotenv
 import os
+import tempfile
 
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
@@ -37,6 +39,31 @@ def ingest():
         raise HTTPException(status_code=404, detail=f"File not found: {str(e)}")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error ingesting document: {str(e)}")
+
+
+@app.post("/upload-pdf")
+async def upload_pdf(file: UploadFile = File(...)):
+    if not file.filename or not file.filename.lower().endswith(".pdf"):
+        raise HTTPException(status_code=400, detail="Only PDF files are supported")
+
+    suffix = os.path.splitext(file.filename)[1] or ".pdf"
+
+    try:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as temp_file:
+            temp_file.write(await file.read())
+            temp_path = temp_file.name
+
+        response = ingest_pdf(temp_path)
+        return {"status": "PDF ingested", "filename": file.filename, "response": response}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error ingesting PDF: {str(e)}")
+    finally:
+        try:
+            if "temp_path" in locals() and os.path.exists(temp_path):
+                os.remove(temp_path)
+        except Exception:
+            pass
+
 @app.get("/search")
 def search(query: str):
     docs = retrieve_docs(query)
