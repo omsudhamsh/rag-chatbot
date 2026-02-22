@@ -4,10 +4,20 @@ from google import genai
 
 load_dotenv()
 
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+_genai_client = None
+
+def get_genai_client():
+    global _genai_client
+    if _genai_client is None:
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            raise ValueError("GEMINI_API_KEY environment variable must be set")
+        _genai_client = genai.Client(api_key=api_key)
+    return _genai_client
 
 def generate_answer(context, query):
     try:
+        client = get_genai_client()
         prompt = f"""
         Answer ONLY using this context:
 

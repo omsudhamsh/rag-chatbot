@@ -30,6 +30,12 @@ def home():
         "message": "RAG Chatbot Backend Running",
         "gemini_key_loaded": api_key is not None
         }
+
+@app.get("/health")
+def health_check():
+    """Simple health check that doesn't require external services"""
+    return {"status": "healthy", "service": "rag-chatbot-api"}
+
 @app.post("/ingest")
 def ingest():
     try:
