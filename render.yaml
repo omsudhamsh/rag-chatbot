@@ -4,11 +4,13 @@ services:
     env: python
     plan: free
     rootDir: backend
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    buildCommand: "pip install --upgrade pip && pip install -r requirements-render.txt && python download_model.py"
+    startCommand: "gunicorn app.main:app --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT --timeout 180 --log-level debug"
     envVars:
       - key: PYTHON_VERSION
-        value: 3.12
+        value: 3.12.0
+      - key: PORT
+        value: 10000
       - key: GEMINI_API_KEY
         sync: false
       - key: SUPABASE_URL
