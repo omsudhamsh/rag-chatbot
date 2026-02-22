@@ -16,20 +16,43 @@ Upload a PDF, ask questions, get answers based on your document content. The sys
 ```
 rag-chatbot/
 ├── backend/
-│   ├── app/main.py              # FastAPI routes
+│   ├── app/
+│   │   └── main.py                  # FastAPI routes
 │   ├── utils/
-│   │   ├── embeddings.py        # Text to vector conversion
-│   │   ├── llm.py               # Gemini AI integration
-│   │   ├── pdf_ingest.py        # PDF processing
-│   │   ├── retrieve.py          # Vector search
-│   │   └── supabase_client.py   # Database connection
+│   │   ├── embeddings.py            # Text to vector conversion
+│   │   ├── llm.py                   # Gemini AI integration
+│   │   ├── pdf_ingest.py            # PDF processing
+│   │   ├── retrieve.py              # Vector search
+│   │   ├── store_documents.py       # Document storage
+│   │   └── supabase_client.py       # Database connection
+│   ├── data/                        # Data directory
+│   ├── models/                      # Model files
+│   ├── routes/                      # API routes
 │   ├── requirements.txt
-│   └── data/sample.txt
-├── frontend/RAG-ChatBOT/
-│   ├── src/Components/          # React components
-│   ├── package.json
-│   └── public/
-└── .venv/                       # Python environment
+│   └── runtime.txt
+├── frontend/
+│   └── RAG-ChatBOT/
+│       ├── src/
+│       │   ├── Components/
+│       │   │   ├── Chat.jsx         # Chat interface
+│       │   │   └── UploadPDF.jsx    # PDF upload
+│       │   ├── App.jsx
+│       │   ├── main.jsx
+│       │   ├── App.css
+│       │   └── index.css
+│       ├── public/                  # Static assets
+│       ├── package.json
+│       ├── vite.config.js
+│       ├── tailwind.config.js
+│       ├── postcss.config.js
+│       └── eslint.config.js
+├── data/
+│   └── sample.txt                   # Sample data
+├── docs/                            # Documentation
+├── .venv/                           # Python environment
+├── LICENSE
+├── README.md
+└── render.yaml
 ```
 
 ## Setup Instructions
