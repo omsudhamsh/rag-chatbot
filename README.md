@@ -66,7 +66,7 @@ rag-chatbot/
 ### Step 1: Clone and Install
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/omsudhamsh/rag-chatbot.git
 cd rag-chatbot
 ```
 
